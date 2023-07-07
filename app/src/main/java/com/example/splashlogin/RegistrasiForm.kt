@@ -3,6 +3,7 @@ package com.example.splashlogin
 import APIService
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -68,6 +69,10 @@ class RegistrasiForm : AppCompatActivity() {
                         if (registrasionResponse != null) {
                             val message = registrasionResponse.message
                             showAlertDialog("Success", message)
+
+                            // Lakukan navigasi ke halaman berikutnya
+                            val intent = Intent(this@RegistrasiForm, VerifikasiRegister::class.java)
+                            startActivity(intent)
                         } else {
                             showAlertDialog("Error", "RegistrasionResponse data is null")
                         }

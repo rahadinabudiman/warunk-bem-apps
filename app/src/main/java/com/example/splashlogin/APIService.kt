@@ -40,4 +40,9 @@ interface APIService {
         @Header("Authorization") token_auth:String?,
         @Body user: VerifyLogin
     ): Response<BaseResponse<UserResponse>>
+
+    @POST("user/activation")
+    suspend fun ActivationAccount(
+        @Body user: VerifyLogin
+    ): Response<BaseResponse<RegistrationResponse>>
 }

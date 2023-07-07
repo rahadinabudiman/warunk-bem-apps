@@ -19,6 +19,9 @@
             android:name=".RegistrasiForm"
             android:exported="false" />
         <activity
+            android:name=".VerifikasiRegister"
+            android:exported="false" />
+        <activity
             android:name=".MenuUtama"
             android:exported="false" />
         <activity
