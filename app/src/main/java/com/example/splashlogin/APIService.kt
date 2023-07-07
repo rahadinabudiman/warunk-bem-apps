@@ -1,4 +1,5 @@
 import com.example.splashlogin.BaseResponse
+import com.example.splashlogin.DashboardData
 import com.example.splashlogin.RegistrationResponse
 import com.example.splashlogin.UserResponse
 import com.example.splashlogin.model.LoginUser
@@ -40,6 +41,11 @@ interface APIService {
         @Header("Authorization") token_auth:String?,
         @Body user: VerifyLogin
     ): Response<BaseResponse<UserResponse>>
+
+    @GET("dashboard")
+    suspend fun Dashboard(
+        @Header("Authorization") token_auth:String?
+    ): Response<BaseResponse<DashboardData>>
 
     @POST("user/activation")
     suspend fun ActivationAccount(

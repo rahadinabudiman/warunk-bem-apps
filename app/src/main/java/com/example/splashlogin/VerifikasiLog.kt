@@ -128,9 +128,8 @@ class VerifikasiLog : AppCompatActivity() {
                                 Log.e("Verifikasi", "Verifikasi berhasil: $VerifikasiResponse")
 
                                 // Simpan token ke Shared Preferences atau Cookie Android
-                                val token = response.header("Authorization")
                                 saveTokenToPreferences(token)
-                                Log.d("Token", "JWT Token: $token")
+                                Log.d("Token", "JWT Token Response: $token")
 
                                 // Lakukan navigasi ke halaman berikutnya
                                 val intent = Intent(this@VerifikasiLog, MenuUtama::class.java)
