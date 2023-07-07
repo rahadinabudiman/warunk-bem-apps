@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.example.splashlogin.R
 import com.example.splashlogin.RetrofitHelper
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -68,20 +69,32 @@ class MenuUtama : AppCompatActivity() {
                                     val email = profilObject.getString("email")
 
                                     val produkArray = dataObject.getJSONArray("produk")
+                                    val produkList = mutableListOf<Produk>()
                                     for (i in 0 until produkArray.length()) {
                                         val produkObject = produkArray.getJSONObject(i)
-                                        val productId = produkObject.getString("id")
-                                        val productName = produkObject.getString("name")
-
-                                        // Lakukan sesuatu dengan productId dan productName
+                                        val produk = Produk(
+                                            produkObject.getString("id"),
+                                            produkObject.getString("created_at"),
+                                            produkObject.getString("updated_at"),
+                                            produkObject.getString("slug"),
+                                            produkObject.getString("name"),
+                                            produkObject.getString("detail"),
+                                            produkObject.getInt("price"),
+                                            produkObject.getInt("stock"),
+                                            produkObject.getString("category"),
+                                            produkObject.getString("image")
+                                        )
+                                        produkList.add(produk)
                                     }
 
                                     runOnUiThread {
                                         val textViewName = findViewById<TextView>(R.id.textViewName)
                                         val textViewSaldo = findViewById<TextView>(R.id.textViewSaldo)
+                                        val textViewProduk = findViewById<TextView>(R.id.textViewProduk)
 
                                         textViewName.text = "Name: $name"
                                         textViewSaldo.text = "Saldo: $saldoAmount"
+                                        textViewProduk.text = produkList.joinToString("\n") { it.name }
                                     }
                                 } else {
                                     Log.e("Dashboard", "Failed to retrieve data: $message")
