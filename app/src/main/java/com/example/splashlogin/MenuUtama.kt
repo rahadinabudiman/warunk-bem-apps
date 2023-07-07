@@ -1,16 +1,19 @@
 package com.example.splashlogin
 
-import android.app.ProgressDialog
+import APIService
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.lifecycleScope
+import com.example.splashlogin.R
+import com.example.splashlogin.RetrofitHelper
 import kotlinx.coroutines.launch
 
 class MenuUtama : AppCompatActivity() {
     private lateinit var apiService: APIService
-    private var progressDialog: ProgressDialog? = null
+    private var progressDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,18 +27,26 @@ class MenuUtama : AppCompatActivity() {
 
     private fun getUserByID() {
         lifecycleScope.launch {
-            showLoading("Getting, please wait......")
-            val result = apiService.getUserByID("2")
-            if (result.isSuccessful) {
-                Log.e("ooooo", "getUserBydID: ${result.body()?.data}")
-            } else {
-                Log.e("ooooo", "getUserBydID field: ${result.message()}")
+            try {
+                showLoading("Getting, please wait......")
+                val result = apiService.getUserByID("64a4bd208473049babdb726c")
+                if (result.isSuccessful) {
+                    Log.e("ooooo", "getUserBydID: ${result.body()?.data}")
+                } else {
+                    Log.e("ooooo", "getUserBydID field: ${result.message()}")
+                }
+            } catch (e: Exception) {
+                Log.e("ooooo", "Error in getUserByID", e)
+            } finally {
+                progressDialog?.dismiss()
             }
-            progressDialog?.dismiss()
         }
     }
 
     private fun showLoading(msg: String) {
-        progressDialog = ProgressDialog.show(this, null, msg, true)
+        progressDialog = AlertDialog.Builder(this)
+            .setMessage(msg)
+            .setCancelable(false)
+            .show()
     }
 }
