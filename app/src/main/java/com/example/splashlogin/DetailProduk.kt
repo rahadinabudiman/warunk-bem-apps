@@ -12,8 +12,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
+import com.example.splashlogin.model.TransaksiSekarang
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -67,10 +69,11 @@ class DetailProduk : AppCompatActivity() {
             val intent = Intent(this@DetailProduk, Keranjang::class.java)
             startActivity(intent)
         }
+
         button19.setOnClickListener {
-            val intent = Intent(this@DetailProduk, Keranjang::class.java)
-            startActivity(intent)
+            beliSekarang()
         }
+
         btnPlus.setOnClickListener {
             increaseQuantity()
         }
@@ -173,6 +176,70 @@ class DetailProduk : AppCompatActivity() {
                 Log.e("Detail Produk", "Error retrieving data", e)
                 progressDialog?.dismiss()
             }
+        }
+    }
+
+    private fun beliSekarang() {
+        val jumlah_barang = tvQuantity.text.toString().toInt()
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val selectedProductId = sharedPreferences.getString("selectedProductId", null)
+
+        val transaksi = TransaksiSekarang(selectedProductId, jumlah_barang)
+
+        lifecycleScope.launch {
+            try {
+                showLoading("Processing transaction...")
+                val response = apiService.transaksiSekarang("Bearer $token", transaksi)
+
+                if (response.isSuccessful) {
+                    val transaksiResponse = response.body()?.data
+                    if (transaksiResponse != null) {
+                        // Handle the successful transaction response
+                        runOnUiThread {
+                            // Perform actions after a successful transaction
+                            // Example: Show a success message, update UI, etc.
+                            Toast.makeText(this@DetailProduk, "Transaction successful!", Toast.LENGTH_SHORT).show()
+                            // Additional actions...
+
+                            // Redirect to the next page (replace NextActivity with your desired activity)
+                            val intent = Intent(this@DetailProduk, dashbord::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                } else {
+                    // Handle the unsuccessful transaction response
+                    val errorResponse = response.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorResponse)
+                    Log.e("Transaction", "Failed to process transaction: $errorMessage")
+                    runOnUiThread {
+                        // Perform actions for unsuccessful transaction
+                        // Example: Show an error message, handle errors, etc.
+                        Toast.makeText(this@DetailProduk, "Transaction failed: $errorMessage", Toast.LENGTH_SHORT).show()
+                        // Additional actions...
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions that occur during the API request
+                Log.e("Transaction", "Error processing transaction", e)
+                runOnUiThread {
+                    // Perform actions for transaction error
+                    // Example: Show an error message, handle errors, etc.
+                    Toast.makeText(this@DetailProduk, "Transaction failed. Please try again.", Toast.LENGTH_SHORT).show()
+                    // Additional actions...
+                }
+            } finally {
+                progressDialog?.dismiss()
+            }
+        }
+    }
+
+    private fun extractErrorMessage(response: String?): String {
+        return try {
+            val jsonResponse = JSONObject(response)
+            jsonResponse.getString("errors")
+        } catch (e: Exception) {
+            "Unknown error"
         }
     }
 }

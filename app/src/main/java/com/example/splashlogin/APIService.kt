@@ -2,9 +2,11 @@ import com.example.splashlogin.BaseResponse
 import com.example.splashlogin.DashboardData
 import com.example.splashlogin.Produk
 import com.example.splashlogin.RegistrationResponse
+import com.example.splashlogin.TransaksiSekarangResponse
 import com.example.splashlogin.UserResponse
 import com.example.splashlogin.model.LoginUser
 import com.example.splashlogin.model.RegisterUser
+import com.example.splashlogin.model.TransaksiSekarang
 import com.example.splashlogin.model.VerifyLogin
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -24,6 +26,12 @@ interface APIService {
 
     @GET("produk/{id}")
     suspend fun getProdukById(@Path("id") id: String): Response<BaseResponse<Produk>>
+
+    @POST("transaksi")
+    suspend fun transaksiSekarang(
+        @Header("Authorization") token_auth:String?,
+        @Body user: TransaksiSekarang
+    ): Response<BaseResponse<TransaksiSekarangResponse>>
 
     @Headers("Content-Type: application/json")
     @GET("user")

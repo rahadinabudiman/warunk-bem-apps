@@ -15,3 +15,8 @@ data class RegisterUser(
     val password: String,
     val passwordconfirm: String,
 )
+
+data class TransaksiSekarang(
+    val produk_id: String?,
+    val total: Int
+)

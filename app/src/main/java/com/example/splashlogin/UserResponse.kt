@@ -22,6 +22,13 @@ data class RegistrationResponse(
     @SerializedName("errors") var errors:String
 )
 
+data class TransaksiSekarangResponse(
+    @SerializedName("status_code") var statusCode: Int,
+    @SerializedName("message") var message: String,
+    @SerializedName("data") var data: String,
+    @SerializedName("errors") var errors:String
+)
+
 data class DashboardData(
     @SerializedName("status_code") var statusCode: Int,
     @SerializedName("message") var message: String,
