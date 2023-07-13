@@ -16,6 +16,15 @@
         android:theme="@style/Theme.SplashLogin"
         tools:targetApi="31">
         <activity
+            android:name=".Keranjang"
+            android:exported="false" />
+        <activity
+            android:name=".DetailProduk"
+            android:exported="false" />
+        <activity
+            android:name=".dashbord"
+            android:exported="false" />
+        <activity
             android:name=".RegistrasiForm"
             android:exported="false" />
         <activity

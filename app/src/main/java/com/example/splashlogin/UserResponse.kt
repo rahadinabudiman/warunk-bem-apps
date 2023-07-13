@@ -66,3 +66,8 @@ data class Produk(
     @SerializedName("category") var category: String,
     @SerializedName("image") var image: String
 )
+
+data class ErrorResponse(
+    @SerializedName("errors")
+    val errors: String
+)

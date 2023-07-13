@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#005AA6"
-    tools:context=".MenuUtama"
+    tools:context=".dashbord"
     tools:layout_editor_absoluteX="-46dp"
     tools:layout_editor_absoluteY="-100dp">
 
@@ -28,6 +28,7 @@
             android:paddingLeft="20dp">
 
             <TextView
+                android:id="@+id/SaldoWBEM"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -42,13 +43,16 @@
                 android:background="@android:color/black" />
 
             <TextView
+                android:id="@+id/saldoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Rp. 20.000"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 android:textSize="14sp" />
+
         </LinearLayout>
 
         <ImageView
@@ -58,6 +62,7 @@
             android:layout_gravity="end"
             android:paddingEnd="20dp"
             app:srcCompat="@drawable/baseline_account_circle_24" />
+
     </FrameLayout>
 
 
@@ -118,28 +123,28 @@
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginEnd="32dp"
-                android:text="Pesan Sekarang"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="32dp"
+            android:text="Pesan Sekarang"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
         </LinearLayout>
     </FrameLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="#f6f6f6"
-        app:fabCradleMargin="8dp"
-        app:fabCradleRoundedCornerRadius="50dp"
-        app:fabCradleVerticalOffset="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="-2dp">
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:backgroundTint="#f6f6f6"
+    app:fabCradleMargin="8dp"
+    app:fabCradleRoundedCornerRadius="50dp"
+    app:fabCradleVerticalOffset="6dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:layout_editor_absoluteX="-2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -152,14 +157,14 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/homeimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_home_24" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/hometext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Home"
@@ -168,21 +173,21 @@
                     android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/homebtn"
+                android:id="@+id/riwayatbtn"
                 android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/riwayatimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_event_note_24" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/riwayatText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Riwayat"
@@ -191,21 +196,21 @@
                     android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/homebtn"
+                android:id="@+id/helpbtn"
                 android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/helpimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_chat_24" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/helptext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Help"
@@ -214,21 +219,21 @@
                     android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/homebtn"
+                android:id="@+id/settingbtn"
                 android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/settingimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_settings_24" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/settingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Setting"
@@ -239,21 +244,21 @@
         </LinearLayout>
 
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:backgroundTint="@color/white"
-        android:elevation="3dp"
-        android:src="@drawable/baseline_qr_code_scanner_24"
-        app:backgroundTint="#005AA6"
-        app:layout_constraintBottom_toBottomOf="@+id/app_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent">
+        </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="44dp"
+            android:backgroundTint="@color/white"
+            android:elevation="3dp"
+            android:src="@drawable/baseline_qr_code_scanner_24"
+            app:backgroundTint="#005AA6"
+            app:layout_constraintBottom_toBottomOf="@+id/app_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent">
 
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     <TextView
         android:id="@+id/textView11"
@@ -288,12 +293,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
         <LinearLayout
+            android:id="@+id/LinearLayoutProduk"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/linearLayoutProduk"
                 android:layout_width="139dp"
                 android:layout_height="187dp"
                 android:layout_marginStart="40dp"
@@ -304,13 +310,14 @@
                 android:paddingLeft="20dp">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/imageProduk"
                     android:layout_width="100dp"
                     android:layout_height="120dp"
                     android:layout_marginLeft="2dp"
                     app:srcCompat="@drawable/ko3" />
 
                 <TextView
+                    android:id="@+id/NamaProduk"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -321,129 +328,17 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/button14"
+                    android:id="@+id/ButtonBeli"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="18dp"
-                    android:textColor="@color/white"
                     android:gravity="center"
-                    android:text="Beli" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="139dp"
-                android:layout_height="187dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:background="#fff"
-                android:gravity="left"
-                android:orientation="vertical"
-                android:paddingLeft="20dp">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="2dp"
-                    app:srcCompat="@drawable/ko1" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:text="Kripik kaca"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/button15"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="Beli"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginTop="2dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="139dp"
-                android:layout_height="187dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:background="#fff"
-                android:gravity="left"
-                android:orientation="vertical"
-                android:paddingLeft="20dp">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="2dp"
-                    app:srcCompat="@drawable/ko2" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:text="Good Day"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/button16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="Beli"
-                    android:gravity="center"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginTop="2dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="139dp"
-                android:layout_height="187dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:background="#fff"
-                android:gravity="left"
-                android:orientation="vertical"
-                android:paddingLeft="20dp">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="2dp"
-                    app:srcCompat="@drawable/ko4" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:text="Kripik Usus"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/button17"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Beli"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginTop="2dp"/>
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
     </HorizontalScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

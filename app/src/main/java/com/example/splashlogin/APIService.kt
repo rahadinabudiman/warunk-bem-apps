@@ -1,11 +1,14 @@
 import com.example.splashlogin.BaseResponse
 import com.example.splashlogin.DashboardData
+import com.example.splashlogin.Produk
 import com.example.splashlogin.RegistrationResponse
 import com.example.splashlogin.UserResponse
 import com.example.splashlogin.model.LoginUser
 import com.example.splashlogin.model.RegisterUser
 import com.example.splashlogin.model.VerifyLogin
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -18,6 +21,9 @@ interface APIService {
 
     @GET("user/{id}")
     suspend fun getUserByID(@Path("id") id: String): Response<BaseResponse<UserResponse>>
+
+    @GET("produk/{id}")
+    suspend fun getProdukById(@Path("id") id: String): Response<BaseResponse<Produk>>
 
     @Headers("Content-Type: application/json")
     @GET("user")
@@ -51,4 +57,17 @@ interface APIService {
     suspend fun ActivationAccount(
         @Body user: VerifyLogin
     ): Response<BaseResponse<RegistrationResponse>>
+
+    companion object {
+        private const val BASE_URL = "http://10.0.2.2:8080/api/v1/"
+
+        fun create(): APIService {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            return retrofit.create(APIService::class.java)
+        }
+    }
 }

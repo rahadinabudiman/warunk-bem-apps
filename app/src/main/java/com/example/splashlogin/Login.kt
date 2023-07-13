@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.splashlogin.BaseResponse
 import com.example.splashlogin.model.LoginUser
 import com.example.splashlogin.UserResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,10 +67,10 @@ class Login : AppCompatActivity() {
             try {
                 showLoading("Logging in, please wait...")
 
-                // Panggil fungsi login dari APIService
                 val response = withContext(Dispatchers.IO) { apiService.loginUser(user) }
 
                 if (response.isSuccessful) {
+                    // Berhasil login
                     val responseData = response.body()
                     if (responseData != null) {
                         val userResponse = responseData.data
@@ -78,7 +79,6 @@ class Login : AppCompatActivity() {
                             saveTokenToPreferences(token)
                             displayTokenFromPreferences()
 
-                            // Lakukan verifikasi login
                             val intent = Intent(this@Login, VerifikasiLog::class.java)
                             startActivity(intent)
                         } else {
@@ -92,14 +92,41 @@ class Login : AppCompatActivity() {
                 } else {
                     // Login gagal
                     Log.e("Login", "Login failed: ${response.code()}")
+
+                    // Tampilkan pesan respons error
+                    val errorResponse = response.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorResponse)
+                    showErrorAlert(errorMessage)
                 }
             } catch (e: Exception) {
                 // Error saat melakukan login
                 Log.e("Login", "Error during login", e)
+
+                // Tampilkan alert error
+                showErrorAlert("An error occurred during login.")
             } finally {
                 progressDialog?.dismiss()
             }
         }
+    }
+
+    private fun extractErrorMessage(errorResponse: String?): String {
+        try {
+            val error = Gson().fromJson(errorResponse, ErrorResponse::class.java)
+            return error.errors
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return "Unknown error"
+    }
+
+    private fun showErrorAlert(errorMessage: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage(errorMessage)
+        builder.setPositiveButton("OK") { dialog, which -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun saveTokenToPreferences(token: String?) {

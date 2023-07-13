@@ -132,7 +132,7 @@ class VerifikasiLog : AppCompatActivity() {
                                 Log.d("Token", "JWT Token Response: $token")
 
                                 // Lakukan navigasi ke halaman berikutnya
-                                val intent = Intent(this@VerifikasiLog, MenuUtama::class.java)
+                                val intent = Intent(this@VerifikasiLog, dashbord::class.java)
                                 startActivity(intent)
                             } else {
                                 // Response tidak valid atau data null

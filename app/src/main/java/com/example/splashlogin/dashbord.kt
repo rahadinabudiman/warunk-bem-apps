@@ -3,22 +3,35 @@ package com.example.splashlogin
 import APIService
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
-import com.example.splashlogin.R
-import com.example.splashlogin.RetrofitHelper
-import com.google.gson.annotations.SerializedName
+import com.squareup.picasso.Picasso
+import com.example.splashlogin.R.dimen.text_size
 import kotlinx.coroutines.launch
-import okhttp3.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 
-class MenuUtama : AppCompatActivity() {
+class dashbord : AppCompatActivity() {
     private lateinit var apiService: APIService
     private var progressDialog: AlertDialog? = null
     private val httpClient = OkHttpClient.Builder().addInterceptor(
@@ -29,10 +42,30 @@ class MenuUtama : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_menu_utama)
+        setContentView(R.layout.activity_dashbord)
+
         apiService = RetrofitHelper.getInstance().create(APIService::class.java)
 
         getUserDashboard()
+
+        val button4 = findViewById<Button>(R.id.button4)
+        button4.setBackgroundColor(Color.BLUE)
+
+        button4.setOnClickListener {
+            val intent = Intent(this@dashbord, MenuUtama::class.java)
+            startActivity(intent)
+        }
+
+
+        val button14 = findViewById<Button>(R.id.ButtonBeli)
+        button14.setBackgroundColor(Color.BLUE)
+
+        button14.setOnClickListener {
+            val intent = Intent(this@dashbord, DetailProduk::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
     private fun getUserDashboard() {
@@ -88,13 +121,51 @@ class MenuUtama : AppCompatActivity() {
                                     }
 
                                     runOnUiThread {
-                                        val textViewName = findViewById<TextView>(R.id.textView)
-                                        val textViewSaldo = findViewById<TextView>(R.id.textView)
-                                        val textViewProduk = findViewById<TextView>(R.id.textView)
+                                        // val textViewName = findViewById<TextView>(R.id.SaldoWBEM)
+                                        val textViewSaldo = findViewById<TextView>(R.id.saldoText)
+                                        val linearLayout = findViewById<LinearLayout>(R.id.LinearLayoutProduk)
+                                        val formatRupiah = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+                                        formatRupiah.currency = Currency.getInstance("IDR")
+                                        val saldoFormatted = formatRupiah.format(saldoAmount)
+                                        textViewSaldo.text = saldoFormatted
 
-                                        textViewName.text = "Name: $name"
-                                        textViewSaldo.text = "Saldo: $saldoAmount"
-                                        textViewProduk.text = produkList.joinToString("\n") { it.name }
+                                        // Hapus semua tampilan produk yang ada
+                                        linearLayout.removeAllViews()
+
+                                        // Tambahkan tampilan produk baru berdasarkan data dari API
+                                        for (produk in produkList) {
+                                            val produkLayout = layoutInflater.inflate(R.layout.produk_item, null) as LinearLayout
+
+                                            val cardView = produkLayout.findViewById<CardView>(R.id.cardViewProduk)
+                                            val imageView = produkLayout.findViewById<ImageView>(R.id.imageProduk)
+                                            val textView = produkLayout.findViewById<TextView>(R.id.NamaProduk)
+                                            val button = produkLayout.findViewById<Button>(R.id.ButtonBeli)
+
+                                            // Set gambar menggunakan URL dari respons API
+                                            Picasso.get().load(produk.image).into(imageView)
+
+                                            textView.text = produk.name
+                                            button.setOnClickListener {
+                                                val idProduk = produk.id // Ganti dengan ID produk yang sesuai
+                                                val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                                                val editor = sharedPreferences.edit()
+                                                editor.putString("selectedProductId", idProduk)
+                                                editor.apply()
+
+                                                val intent = Intent(this@dashbord, DetailProduk::class.java)
+                                                startActivity(intent)
+                                            }
+
+                                            val linearLayout = findViewById<LinearLayout>(R.id.LinearLayoutProduk)
+                                            val layoutParams = LinearLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                                LinearLayout.LayoutParams.WRAP_CONTENT
+                                            )
+                                            layoutParams.setMargins(0, 0, 0, 16) // Atur jarak bawah antara produk
+                                            cardView.layoutParams = layoutParams
+
+                                            linearLayout.addView(produkLayout)
+                                        }
                                     }
                                 } else {
                                     Log.e("Dashboard", "Failed to retrieve data: $message")
