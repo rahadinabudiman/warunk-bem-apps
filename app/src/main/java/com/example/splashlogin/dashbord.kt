@@ -48,6 +48,13 @@ class dashbord : AppCompatActivity() {
 
         getUserDashboard()
 
+        val textView12: TextView = findViewById(R.id.textView12)
+        textView12.setOnClickListener {
+            // Pindah ke MenuUtamaActivity
+            val intent = Intent(this, MenuUtama::class.java)
+            startActivity(intent)
+        }
+
         val button4 = findViewById<Button>(R.id.button4)
         button4.setBackgroundColor(Color.BLUE)
 

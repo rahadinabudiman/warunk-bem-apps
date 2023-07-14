@@ -62,14 +62,21 @@ class MenuUtama : AppCompatActivity() {
 
         getProduk()
 
-//        val button6: Button = findViewById(R.id.button6)
-//        button6.setBackgroundColor(Color.WHITE)
-//
-//        val button8: Button = findViewById(R.id.button8)
-//        button8.setBackgroundColor(Color.WHITE)
-//
-//        val button7: Button = findViewById(R.id.button7)
-//        button7.setBackgroundColor(Color.WHITE)
+        val homebtn: LinearLayout = findViewById(R.id.homebtn)
+        homebtn.setOnClickListener {
+            // Pindah ke DashbordActivity
+            val intent = Intent(this, dashbord::class.java)
+            startActivity(intent)
+        }
+
+        val button6: Button = findViewById(R.id.button6)
+        button6.setBackgroundColor(Color.WHITE)
+
+        val button8: Button = findViewById(R.id.button8)
+        button8.setBackgroundColor(Color.WHITE)
+
+        val button7: Button = findViewById(R.id.button7)
+        button7.setBackgroundColor(Color.WHITE)
     }
 
     private fun navigateToDetailProduk(detailProdukClass: Class<*>) {
