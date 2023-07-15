@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#005AA6"
+    android:background="@color/blue"
     tools:context=".MenuUtama">
+
+    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="#005AA6">
+        android:background="@color/blue">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,6 +60,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/headermanja"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
@@ -97,23 +99,28 @@
                 android:textColor="#005AA5" />
 
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- Middle Section - Product List -->
+    <LinearLayout
+        android:id="@+id/middleSectionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/app_bar">
+
+        <!-- Product List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewProduk"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewProduk"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:background="#005AA6"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerLayout"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2" />
-
+    <!-- Bottom Section -->
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -123,8 +130,7 @@
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="50dp"
         app:fabCradleVerticalOffset="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="-2dp">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,100 +138,106 @@
 
             <LinearLayout
                 android:id="@+id/homebtn"
-                android:layout_width="0dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
+                <!-- ... Your content for home button ... -->
                 <ImageView
-                    android:id="@+id/homeImageView"
+                    android:id="@+id/homeimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_home_24" />
 
                 <TextView
-                    android:id="@+id/homeTextView"
+                    android:id="@+id/hometext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Home"
                     android:textColor="#005AA6"
                     android:textSize="12sp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/riwayatbtn"
-                android:layout_width="0dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
+                <!-- ... Your content for riwayat button ... -->
                 <ImageView
-                    android:id="@+id/riwayatImageView"
+                    android:id="@+id/riwayatimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_event_note_24" />
 
                 <TextView
-                    android:id="@+id/riwayatTextView"
+                    android:id="@+id/riwayatText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Riwayat"
                     android:textColor="#005AA6"
                     android:textSize="12sp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/helpbtn"
-                android:layout_width="0dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
+                <!-- ... Your content for cart button ... -->
                 <ImageView
-                    android:id="@+id/helpImageView"
+                    android:id="@+id/keranjangimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/baseline_chat_24" />
+                    app:srcCompat="@drawable/baseline_shopping_cart_24" />
 
                 <TextView
-                    android:id="@+id/helpTextView"
+                    android:id="@+id/keranjangtext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Help"
+                    android:text="Cart"
                     android:textColor="#005AA6"
                     android:textSize="12sp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/settingbtn"
-                android:layout_width="0dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
+                <!-- ... Your content for setting button ... -->
                 <ImageView
-                    android:id="@+id/settingImageView"
+                    android:id="@+id/settingimage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/baseline_settings_24" />
 
                 <TextView
-                    android:id="@+id/settingTextView"
+                    android:id="@+id/settingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Setting"
                     android:textColor="#005AA6"
                     android:textSize="12sp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"/>
             </LinearLayout>
+
         </LinearLayout>
+
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -234,10 +246,9 @@
         android:layout_marginBottom="44dp"
         android:backgroundTint="@color/white"
         android:elevation="3dp"
-        android:src="@drawable/baseline_shopping_cart_24"
-        android:contentDescription="Cart"
+        android:src="@drawable/baseline_qr_code_scanner_24"
         app:backgroundTint="#005AA6"
-        app:layout_constraintBottom_toBottomOf="@id/app_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/app_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />

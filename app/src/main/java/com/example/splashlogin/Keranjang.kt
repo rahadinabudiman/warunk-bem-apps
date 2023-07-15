@@ -115,21 +115,22 @@ class Keranjang : AppCompatActivity() {
                                     val dataJsonObject = jsonResponse.optJSONObject("data")
                                     if (dataJsonObject != null) {
                                         val idKeranjang = dataJsonObject.optString("id")
-                                        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                                        val sharedPreferences =
+                                            getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
                                         val editor = sharedPreferences.edit()
                                         editor.putString("selectedKeranjangId", idKeranjang)
                                         editor.apply()
-                                        val produkJsonArray = dataJsonObject.optJSONArray("produk")
-                                        if (produkJsonArray != null) {
+                                        val produkJsonArray =
+                                            dataJsonObject.optJSONArray("produk")
+                                        if (produkJsonArray != null && produkJsonArray.length() > 0) {
                                             val gson = Gson()
                                             val produkList: ArrayList<Produk> = ArrayList()
                                             var total = 0
                                             for (i in 0 until produkJsonArray.length()) {
-                                                val produk: Produk =
-                                                    gson.fromJson(
-                                                        produkJsonArray.getJSONObject(i).toString(),
-                                                        Produk::class.java
-                                                    )
+                                                val produk: Produk = gson.fromJson(
+                                                    produkJsonArray.getJSONObject(i).toString(),
+                                                    Produk::class.java
+                                                )
                                                 produkList.add(produk)
                                                 total += produk.price * produk.stock
                                             }
@@ -143,17 +144,23 @@ class Keranjang : AppCompatActivity() {
                                                 recyclerKeranjang.adapter =
                                                     CartAdapter(produkList, total)
 
-                                                val totalPriceTextView: TextView = findViewById(R.id.textViewTotalPrice)
-                                                val formatRupiah = NumberFormat.getCurrencyInstance(
-                                                    Locale("in", "ID")
-                                                )
+                                                val totalPriceTextView: TextView =
+                                                    findViewById(R.id.textViewTotalPrice)
+                                                val formatRupiah =
+                                                    NumberFormat.getCurrencyInstance(Locale("in", "ID"))
                                                 formatRupiah.currency = Currency.getInstance("IDR")
-                                                val TotalPriceFormatted = formatRupiah.format(total)
+                                                val TotalPriceFormatted =
+                                                    formatRupiah.format(total)
 
-                                                totalPriceTextView.text = "Total Price:$TotalPriceFormatted"
+                                                totalPriceTextView.text =
+                                                    "Total Price: $TotalPriceFormatted"
+
+                                                val emptyTextView: TextView =
+                                                    findViewById(R.id.emptyTextView)
+                                                emptyTextView.visibility = View.GONE
                                             }
                                         } else {
-                                            // Tampilkan emptyTextView jika produkJsonArray null
+                                            // Tampilkan emptyTextView jika produkJsonArray null atau kosong
                                             runOnUiThread {
                                                 val emptyTextView: TextView =
                                                     findViewById(R.id.emptyTextView)
