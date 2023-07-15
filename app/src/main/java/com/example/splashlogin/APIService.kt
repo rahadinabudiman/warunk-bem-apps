@@ -4,6 +4,7 @@ import com.example.splashlogin.Produk
 import com.example.splashlogin.RegistrationResponse
 import com.example.splashlogin.TransaksiSekarangResponse
 import com.example.splashlogin.UserResponse
+import com.example.splashlogin.model.BeliKeranjang
 import com.example.splashlogin.model.LoginUser
 import com.example.splashlogin.model.MasukKeranjang
 import com.example.splashlogin.model.RegisterUser
@@ -32,6 +33,12 @@ interface APIService {
     suspend fun transaksiSekarang(
         @Header("Authorization") token_auth:String?,
         @Body user: TransaksiSekarang
+    ): Response<BaseResponse<TransaksiSekarangResponse>>
+
+    @POST("transaksi/keranjang")
+    suspend fun transaksiKeranjang(
+        @Header("Authorization") token_auth:String?,
+        @Body user: BeliKeranjang
     ): Response<BaseResponse<TransaksiSekarangResponse>>
 
     @POST("keranjang")

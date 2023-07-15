@@ -48,8 +48,6 @@ class CartAdapter(private val produkList: List<Produk>, private val total: Int) 
                 // For example: update the quantityTextView and perform any necessary calculations
             }
 
-            // TODO: Load and display the product image using Glide or Picasso
-            // For example:
             Glide.with(itemView)
                 .load(produk.image)
                 .into(produkImageView)

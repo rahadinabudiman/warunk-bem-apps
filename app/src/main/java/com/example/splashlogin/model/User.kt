@@ -21,6 +21,10 @@ data class TransaksiSekarang(
     val total: Int
 )
 
+data class BeliKeranjang(
+    val id: String?
+)
+
 data class MasukKeranjang(
     val produk_id: String?,
     val total: Int

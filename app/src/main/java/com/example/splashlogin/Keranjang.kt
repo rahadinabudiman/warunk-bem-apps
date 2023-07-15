@@ -3,6 +3,7 @@ package com.example.splashlogin
 import APIService
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,9 +12,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.splashlogin.model.BeliKeranjang
+import com.example.splashlogin.model.TransaksiSekarang
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -24,6 +29,9 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import java.io.IOException
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 
 class Keranjang : AppCompatActivity() {
     private lateinit var apiService: APIService
@@ -44,6 +52,28 @@ class Keranjang : AppCompatActivity() {
         val imageView6: ImageView = findViewById(R.id.imageView11)
         imageView6.setOnClickListener {
             goToMenuUtama()
+        }
+
+        val homeText: LinearLayout = findViewById(R.id.homebtn)
+        homeText.setOnClickListener {
+            // Pindah ke Dashboard Activity
+            val intent = Intent(this, dashbord::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val riwayatText: LinearLayout = findViewById(R.id.riwayatbtn)
+        riwayatText.setOnClickListener{
+            // Pindah ke Riwayat Pembelian Activity (refresh halaman)
+            val intent = Intent(this, RiwayatPembelian::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val BeliSemua: Button = findViewById(R.id.buttonBeliSemua)
+        BeliSemua.setOnClickListener {
+            // Beli Semua
+            BeliSemuaKeranjang()
         }
     }
 
@@ -84,11 +114,16 @@ class Keranjang : AppCompatActivity() {
                                 if (statusCode == 200) {
                                     val dataJsonObject = jsonResponse.optJSONObject("data")
                                     if (dataJsonObject != null) {
-                                        val total = dataJsonObject.getInt("total")
+                                        val idKeranjang = dataJsonObject.optString("id")
+                                        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                                        val editor = sharedPreferences.edit()
+                                        editor.putString("selectedKeranjangId", idKeranjang)
+                                        editor.apply()
                                         val produkJsonArray = dataJsonObject.optJSONArray("produk")
                                         if (produkJsonArray != null) {
                                             val gson = Gson()
                                             val produkList: ArrayList<Produk> = ArrayList()
+                                            var total = 0
                                             for (i in 0 until produkJsonArray.length()) {
                                                 val produk: Produk =
                                                     gson.fromJson(
@@ -96,6 +131,7 @@ class Keranjang : AppCompatActivity() {
                                                         Produk::class.java
                                                     )
                                                 produkList.add(produk)
+                                                total += produk.price * produk.stock
                                             }
 
                                             runOnUiThread {
@@ -106,6 +142,15 @@ class Keranjang : AppCompatActivity() {
                                                     LinearLayoutManager(this@Keranjang)
                                                 recyclerKeranjang.adapter =
                                                     CartAdapter(produkList, total)
+
+                                                val totalPriceTextView: TextView = findViewById(R.id.textViewTotalPrice)
+                                                val formatRupiah = NumberFormat.getCurrencyInstance(
+                                                    Locale("in", "ID")
+                                                )
+                                                formatRupiah.currency = Currency.getInstance("IDR")
+                                                val TotalPriceFormatted = formatRupiah.format(total)
+
+                                                totalPriceTextView.text = "Total Price:$TotalPriceFormatted"
                                             }
                                         } else {
                                             // Tampilkan emptyTextView jika produkJsonArray null
@@ -140,6 +185,69 @@ class Keranjang : AppCompatActivity() {
                 Log.e("Keranjang", "Error retrieving data", e)
                 progressDialog?.dismiss()
             }
+        }
+    }
+
+    private fun BeliSemuaKeranjang(){
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val selectedKeranjangId = sharedPreferences.getString("selectedKeranjangId", null)
+
+        val BeliSemuaKeranjangData = BeliKeranjang(selectedKeranjangId)
+
+        lifecycleScope.launch {
+            try {
+                showLoading("Processing transaction...")
+                val response = apiService.transaksiKeranjang("Bearer $token", BeliSemuaKeranjangData)
+
+                if (response.isSuccessful) {
+                    val transaksiResponse = response.body()?.data
+                    if (transaksiResponse != null) {
+                        // Handle the successful transaction response
+                        runOnUiThread {
+                            // Perform actions after a successful transaction
+                            // Example: Show a success message, update UI, etc.
+                            Toast.makeText(this@Keranjang, "Transaction successful!", Toast.LENGTH_SHORT).show()
+                            // Additional actions...
+
+                            // Redirect to the next page (replace NextActivity with your desired activity)
+                            val intent = Intent(this@Keranjang, dashbord::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                } else {
+                    // Handle the unsuccessful transaction response
+                    val errorResponse = response.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorResponse)
+                    Log.e("Transaction", "Failed to process transaction: $errorMessage")
+                    runOnUiThread {
+                        // Perform actions for unsuccessful transaction
+                        // Example: Show an error message, handle errors, etc.
+                        Toast.makeText(this@Keranjang, "Transaction failed: $errorMessage", Toast.LENGTH_SHORT).show()
+                        // Additional actions...
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions that occur during the API request
+                Log.e("Transaction", "Error processing transaction", e)
+                runOnUiThread {
+                    // Perform actions for transaction error
+                    // Example: Show an error message, handle errors, etc.
+                    Toast.makeText(this@Keranjang, "Transaction failed. Please try again.", Toast.LENGTH_SHORT).show()
+                    // Additional actions...
+                }
+            } finally {
+                progressDialog?.dismiss()
+            }
+        }
+    }
+
+    private fun extractErrorMessage(response: String?): String {
+        return try {
+            val jsonResponse = JSONObject(response)
+            jsonResponse.getString("errors")
+        } catch (e: Exception) {
+            "Unknown error"
         }
     }
 }
