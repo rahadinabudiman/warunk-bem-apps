@@ -6,9 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.splashlogin.BaseResponse
@@ -35,6 +38,20 @@ class VerifikasiLog : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verifikasi_log)
+
+        val otpBox1 = findViewById<EditText>(R.id.otpBox1)
+        val otpBox2 = findViewById<EditText>(R.id.otpBox2)
+        val otpBox3 = findViewById<EditText>(R.id.otpBox3)
+        val otpBox4 = findViewById<EditText>(R.id.otpBox4)
+        val otpBox5 = findViewById<EditText>(R.id.otpBox5)
+        val otpBox6 = findViewById<EditText>(R.id.otpBox6)
+
+        otpBox1.addTextChangedListener(createTextWatcher(otpBox1, otpBox2))
+        otpBox2.addTextChangedListener(createTextWatcher(otpBox1, otpBox3))
+        otpBox3.addTextChangedListener(createTextWatcher(otpBox2, otpBox4))
+        otpBox4.addTextChangedListener(createTextWatcher(otpBox3, otpBox5))
+        otpBox5.addTextChangedListener(createTextWatcher(otpBox4, otpBox6))
+        otpBox6.addTextChangedListener(createTextWatcher(otpBox5, otpBox6))
 
         // Initialize apiService
         apiService = RetrofitHelper.getInstance().create(APIService::class.java)
@@ -151,6 +168,10 @@ class VerifikasiLog : AppCompatActivity() {
                     val statusCode = response.code
                     val errorMessage = response.message
                     Log.e("Verifikasi Login", "$statusCode $errorMessage")
+                    // Tampilkan toast bahwa verifikasi gagal
+                    runOnUiThread {
+                        Toast.makeText(this@VerifikasiLog, "Verifikasi gagal", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -161,5 +182,25 @@ class VerifikasiLog : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
         Log.d("Token", "JWT Token: $token")
+    }
+
+    private fun createTextWatcher(previousEditText: EditText, nextEditText: EditText): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No implementation needed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No implementation needed
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrBlank()) {
+                    previousEditText.requestFocus()
+                } else if (s.length == 1) {
+                    nextEditText.requestFocus()
+                }
+            }
+        }
     }
 }
