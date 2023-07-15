@@ -16,6 +16,9 @@
         android:theme="@style/Theme.SplashLogin"
         tools:targetApi="31">
         <activity
+            android:name=".RiwayatPembelian"
+            android:exported="false"/>
+        <activity
             android:name=".Keranjang"
             android:exported="false" />
         <activity

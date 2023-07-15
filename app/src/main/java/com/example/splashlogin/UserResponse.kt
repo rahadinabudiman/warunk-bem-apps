@@ -61,6 +61,24 @@ data class Profil(
     @SerializedName("role") var role: String
 )
 
+data class RiwayatTransaksi(
+    @SerializedName("name") var name: String,
+    @SerializedName("created_at") var createdAt: String,
+    @SerializedName("waktu") var waktu: String,
+    @SerializedName("harga") var harga: Int,
+    @SerializedName("total") var total: Int,
+    @SerializedName("image") var image: String
+)
+
+data class TransactionHistory(
+    val name: String,
+    val created_at: String,
+    val waktu: String,
+    val harga: Int,
+    val total: Int,
+    val image: String
+)
+
 data class Produk(
     @SerializedName("id") var id: String,
     @SerializedName("created_at") var createdAt: String,

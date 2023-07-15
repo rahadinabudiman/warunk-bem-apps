@@ -50,8 +50,15 @@ class dashbord : AppCompatActivity() {
 
         val textView12: TextView = findViewById(R.id.textView12)
         textView12.setOnClickListener {
-            // Pindah ke MenuUtamaActivity
+            // Pindah ke Dashboard Activity
             val intent = Intent(this, MenuUtama::class.java)
+            startActivity(intent)
+        }
+
+        val riwayatText: LinearLayout = findViewById(R.id.riwayatbtn)
+        riwayatText.setOnClickListener{
+            // Pindah ke Riwayat Activity
+            val intent = Intent(this, RiwayatPembelian::class.java)
             startActivity(intent)
         }
 
