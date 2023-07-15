@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
+import com.example.splashlogin.model.MasukKeranjang
 import com.example.splashlogin.model.TransaksiSekarang
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -66,6 +67,7 @@ class DetailProduk : AppCompatActivity() {
         button19.setBackgroundColor(Color.WHITE)
 
         button18.setOnClickListener {
+            masukanKeranjang()
             val intent = Intent(this@DetailProduk, Keranjang::class.java)
             startActivity(intent)
         }
@@ -174,6 +176,61 @@ class DetailProduk : AppCompatActivity() {
                 })
             } catch (e: Exception) {
                 Log.e("Detail Produk", "Error retrieving data", e)
+                progressDialog?.dismiss()
+            }
+        }
+    }
+
+    private fun masukanKeranjang(){
+        val jumlah_barang = tvQuantity.text.toString().toInt()
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        val selectedProductId = sharedPreferences.getString("selectedProductId", null)
+
+        val MasukKeranjang = MasukKeranjang(selectedProductId, jumlah_barang)
+
+        lifecycleScope.launch {
+            try {
+                showLoading("Processing transaction...")
+                val response = apiService.masukKeranjang("Bearer $token", MasukKeranjang)
+
+                if (response.isSuccessful) {
+                    val keranjangResponse = response.body()?.data
+                    if (keranjangResponse != null) {
+                        // Handle the successful transaction response
+                        runOnUiThread {
+                            // Perform actions after a successful transaction
+                            // Example: Show a success message, update UI, etc.
+                            Toast.makeText(this@DetailProduk, "Add to cart success!", Toast.LENGTH_SHORT).show()
+                            // Additional actions...
+
+                            // Redirect to the next page (replace NextActivity with your desired activity)
+                            val intent = Intent(this@DetailProduk, dashbord::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                } else {
+                    // Handle the unsuccessful transaction response
+                    val errorResponse = response.errorBody()?.string()
+                    val errorMessage = extractErrorMessage(errorResponse)
+                    Log.e("Transaction", "Failed to add cart: $errorMessage")
+                    runOnUiThread {
+                        // Perform actions for unsuccessful transaction
+                        // Example: Show an error message, handle errors, etc.
+                        Toast.makeText(this@DetailProduk, "Add Cart failed: $errorMessage", Toast.LENGTH_SHORT).show()
+                        // Additional actions...
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions that occur during the API request
+                Log.e("Transaction", "Error processing cart", e)
+                runOnUiThread {
+                    // Perform actions for transaction error
+                    // Example: Show an error message, handle errors, etc.
+                    Toast.makeText(this@DetailProduk, "Add cart failed. Please try again.", Toast.LENGTH_SHORT).show()
+                    // Additional actions...
+                }
+            } finally {
                 progressDialog?.dismiss()
             }
         }

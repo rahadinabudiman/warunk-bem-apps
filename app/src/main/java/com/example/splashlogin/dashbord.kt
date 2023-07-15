@@ -62,6 +62,12 @@ class dashbord : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val cartText: LinearLayout = findViewById(R.id.cartbtn)
+        cartText.setOnClickListener {
+            val intent = Intent(this, Keranjang::class.java)
+            startActivity(intent)
+        }
+
         val button4 = findViewById<Button>(R.id.button4)
         button4.setBackgroundColor(Color.BLUE)
 
