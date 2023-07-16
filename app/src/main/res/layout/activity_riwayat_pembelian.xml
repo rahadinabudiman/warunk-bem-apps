@@ -156,7 +156,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/helpbtn"
+                android:id="@+id/cartbtn"
                 android:layout_width="8dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"

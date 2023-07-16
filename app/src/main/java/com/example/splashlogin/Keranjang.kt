@@ -70,6 +70,18 @@ class Keranjang : AppCompatActivity() {
             finish()
         }
 
+        val cartText: LinearLayout = findViewById(R.id.cartbtn)
+        cartText.setOnClickListener {
+            val intent = Intent(this, Keranjang::class.java)
+            startActivity(intent)
+        }
+
+        val SettingText: LinearLayout = findViewById(R.id.settingbtn)
+        SettingText.setOnClickListener {
+            val intent = Intent(this, ProfilData::class.java)
+            startActivity(intent)
+        }
+
         val BeliSemua: Button = findViewById(R.id.buttonBeliSemua)
         BeliSemua.setOnClickListener {
             // Beli Semua

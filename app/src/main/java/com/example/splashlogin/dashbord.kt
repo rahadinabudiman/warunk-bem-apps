@@ -68,6 +68,12 @@ class dashbord : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val SettingText: LinearLayout = findViewById(R.id.settingbtn)
+        SettingText.setOnClickListener {
+            val intent = Intent(this, ProfilData::class.java)
+            startActivity(intent)
+        }
+
         val button4 = findViewById<Button>(R.id.button4)
         button4.setBackgroundColor(Color.BLUE)
 

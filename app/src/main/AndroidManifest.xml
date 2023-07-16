@@ -25,6 +25,9 @@
             android:name=".DetailProduk"
             android:exported="false" />
         <activity
+            android:name=".ProfilData"
+            android:exported="false" />
+        <activity
             android:name=".dashbord"
             android:exported="false" />
         <activity

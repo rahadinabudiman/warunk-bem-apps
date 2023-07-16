@@ -52,19 +52,29 @@ class RiwayatPembelian : AppCompatActivity() {
         val button1 = findViewById<Button>(R.id.button1)
         val button2 = findViewById<Button>(R.id.button2)
 
-        val homeText: LinearLayout = findViewById(R.id.homebtn)
-        homeText.setOnClickListener {
-            // Pindah ke Dashboard Activity
+        val HomeText: LinearLayout = findViewById(R.id.homebtn)
+        HomeText.setOnClickListener {
             val intent = Intent(this, dashbord::class.java)
             startActivity(intent)
         }
 
         val riwayatText: LinearLayout = findViewById(R.id.riwayatbtn)
         riwayatText.setOnClickListener{
-            // Pindah ke Riwayat Pembelian Activity (refresh halaman)
+            // Pindah ke Riwayat Activity
             val intent = Intent(this, RiwayatPembelian::class.java)
             startActivity(intent)
-            finish()
+        }
+
+        val cartText: LinearLayout = findViewById(R.id.cartbtn)
+        cartText.setOnClickListener {
+            val intent = Intent(this, Keranjang::class.java)
+            startActivity(intent)
+        }
+
+        val SettingText: LinearLayout = findViewById(R.id.settingbtn)
+        SettingText.setOnClickListener {
+            val intent = Intent(this, ProfilData::class.java)
+            startActivity(intent)
         }
 
         button1.setOnClickListener {
